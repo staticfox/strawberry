@@ -1,7 +1,12 @@
 import dataclasses
 from typing import Any, Dict, List, Union
 
-from graphql.language.ast import FieldNode, FragmentSpreadNode, SelectionNode
+from graphql.language.ast import (
+    FieldNode,
+    FragmentSpreadNode,
+    InlineFragmentNode,
+    SelectionNode,
+)
 from graphql.pyutils.convert_case import camel_to_snake
 
 from strawberry.types.info import Info
@@ -112,7 +117,7 @@ class ASTBuilder:
                 nodes.append(self.parse_leaf_node(inner_node))
             return nodes
 
-        if node.kind == "inline_fragment" and isinstance(node, FieldNode):
+        if node.kind == "inline_fragment" and isinstance(node, InlineFragmentNode):
             return self.parse_inline_fragment(node)
 
         if node.kind == "fragment_definition" and isinstance(node, FieldNode):

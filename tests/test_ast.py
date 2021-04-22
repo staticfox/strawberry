@@ -17,6 +17,10 @@ EXPECTED_PYTHON_NAMES = [
                     "third_field",
                 ],
                 "fifth_field",
+                "object_c",
+                [
+                    "seventh_field",
+                ],
             ],
             "python_names",
             "graphql_names",
@@ -37,6 +41,10 @@ EXPECTED_GRAPHQL_NAMES = [
                     "thirdField",
                 ],
                 "fifthField",
+                "objectC",
+                [
+                    "seventhField",
+                ],
             ],
             "pythonNames",
             "graphqlNames",
@@ -53,10 +61,16 @@ def test_parse_ast():
         third_field: str
 
     @strawberry.type
+    class ObjectC:
+        sixth_field: int
+        seventh_field: str
+
+    @strawberry.type
     class ObjectB:
         fourth_field: bool
         object_a: ObjectA
         fifth_field: str
+        object_c: ObjectC
 
     @strawberry.type
     class Result:
@@ -84,6 +98,10 @@ def test_parse_ast():
                         third_field="c",
                     ),
                     fifth_field="d",
+                    object_c=ObjectC(
+                        sixth_field=6,
+                        seventh_field="e",
+                    ),
                 ),
                 python_names=str(ast.document_python_names),
                 graphql_names=str(ast.document_graphql_names),
@@ -106,6 +124,11 @@ def test_parse_ast():
                         ... AliasA
                     }
                     fifthField
+                    objectC {
+                        ... on ObjectC {
+                            seventhField
+                        }
+                    }
                 }
                 pythonNames
                 graphqlNames
@@ -125,6 +148,9 @@ def test_parse_ast():
                     "thirdField": "c",
                 },
                 "fifthField": "d",
+                "objectC": {
+                    "seventhField": "e",
+                },
             },
             "pythonNames": str(EXPECTED_PYTHON_NAMES),
             "graphqlNames": str(EXPECTED_GRAPHQL_NAMES),
