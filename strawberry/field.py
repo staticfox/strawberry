@@ -41,6 +41,7 @@ class StrawberryField(dataclasses.Field):
         default_value: Any = UNSET,
         default_factory: Union[Callable, object] = UNSET,
         deprecation_reason: Optional[str] = None,
+        kw_only=False,
     ):
         federation = federation or FederationFieldParams()
 
@@ -57,6 +58,7 @@ class StrawberryField(dataclasses.Field):
             compare=is_basic_field,
             hash=None,
             metadata=None,
+            kw_only=False,
         )
 
         self._graphql_name = graphql_name
@@ -329,6 +331,7 @@ def field(
         deprecation_reason=deprecation_reason,
         default_value=default,
         default_factory=default_factory,
+        kw_only=False,
     )
 
     if resolver:
